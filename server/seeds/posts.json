@@ -1,0 +1,44 @@
+[
+    {
+        "title": "This game is great",
+        "text": "I love playing Wisdom with my friends",
+        "userId": 1,
+        "pinned": 0,
+        "catagory": 1
+    },
+    {
+        "title": "Game breaking bug",
+        "text": "I found a bug that breaks the game. I don't know how to fix it.",
+        "userId": 2,
+        "pinned": 0,
+        "catagory": 2
+    },
+    {
+        "title": "Client won't start",
+        "text": "The client black screens every time on start up. I don't know how to fix it.",
+        "userId": 3,
+        "pinned": 0,
+        "catagory": 3
+    },
+    {
+        "title": "Did you see the chief's game?",
+        "text": "Did you see the chief's game yesterday? It was so amazing!",
+        "userId": 1,
+        "pinned": 0,
+        "catagory": 1
+    },
+    {
+        "title": "Forum Rules",
+        "text": "Read these before making a comment!",
+        "userId": 1,
+        "pinned": 1,
+        "catagory": 6
+    },
+    {
+        "title": "How I feel about rules",
+        "text": "I follow my own rules!",
+        "userId": 2,
+        "pinned": 0,
+        "catagory": 6
+    }
+]

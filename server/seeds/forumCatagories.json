@@ -1,0 +1,26 @@
+[
+    {
+        "title" : "General",
+        "catagoryDescription": "For any topic not covered by other forums"
+    },
+    {
+        "title": "Bugs",
+        "catagoryDescription": "Found a bug in the game? Report it here!"
+    },
+    {
+        "title": "Client Bugs",
+        "catagoryDescription": "Found a bug with the client? Report it here!"
+    },
+    {
+        "title": "Updates",
+        "catagoryDescription": "The place for all updates"
+    },
+    {
+        "title": "Guides",
+        "catagoryDescription": "Need help? Check out our guides section"
+    },
+    {
+        "title": "Rules",
+        "catagoryDescription": "Please read first before commenting!"
+    }
+]
