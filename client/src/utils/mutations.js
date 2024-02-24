@@ -51,7 +51,7 @@ mutation unpinPost($postId: Int!){
 }`
 
 export const NEWPOST = gql`
-mutation addPost($title: String!, $text: String!, $image: String, $catagory: String){
+mutation addPost($title: String!, $text: String!, $image: String, $catagory: Int){
     addPost(title: $title, text: $text, image: $image, catagory: $catagory){
         id
     }

@@ -158,27 +158,21 @@ const resolvers = {
             return { token: token, user: plainUser }
         },
         addPost: async (parent, { title, text, image, catagory }, context) => {
-            const Fcatagory = await ForumCatagories.findOne({
-                where: {
-                    title: catagory
-                }
-            })
-            const Fcatagoryplain = Fcatagory.get({ plain: true })
             if (image) {
                 const newPost = await Posts.create({
                     title,
                     text,
                     image,
-                    user: context.user.id,
-                    catagory: Fcatagoryplain.id
+                    userId: context.user.id,
+                    catagory: catagory
                 })
                 return newPost.get({ plain: true })
             } else {
                 const newPost = await Posts.create({
                     title,
                     text,
-                    user: context.user.id,
-                    catagory: Fcatagoryplain.id
+                    userId: context.user.id,
+                    catagory: catagory
                 })
                 return newPost.get({ plain: true })
             }

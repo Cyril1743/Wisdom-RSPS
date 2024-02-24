@@ -5,8 +5,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CHECKFORUMCATAGORY } from "../utils/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import Auth from "../utils/auth"
-import { PINPOST, UNPINPOST } from "../utils/mutations";
-import { ImgurClient } from 'imgur'
+import { NEWPOST, PINPOST, UNPINPOST } from "../utils/mutations";
 
 export default function Forum() {
     const navigate = useNavigate()
@@ -20,16 +19,11 @@ export default function Forum() {
     const [images, setImages] = useState([])
     const [filePreviews, setFilePreviews] = useState([])
 
-    const clientSecret = fetch('/forum/clientId', {
-        method: "POST"
-    }).then((response) => response.json())
-    const clientId = clientSecret.clientId
-
-    const client = new ImgurClient({ clientId: clientId })
-
-    const { loading, data } = useQuery(CHECKFORUMCATAGORY, {
+    const { loading, data, refetch } = useQuery(CHECKFORUMCATAGORY, {
         variables: { id: +forumId, offset: currentPage * 50 }
     })
+
+    const [newPost] = useMutation(NEWPOST)
 
     const [pinPost] = useMutation(PINPOST)
 
@@ -62,9 +56,23 @@ export default function Forum() {
 
     const { textAreaHeight, onInput } = useTextareaAutosize()
 
+    const formatDate = (timestamp) => {
+        const date = new Date(+timestamp)
+        return date.toLocaleString("en-us", {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        })
+    }
+
     if (loading) {
         return <Spinner />
     }
+
+    console.log(data)
 
     const sortedPosts = [...data.forumCatagory.posts].sort((a, b) => {
         return b.pinned - a.pinned
@@ -138,25 +146,20 @@ export default function Forum() {
 
     const handleNewPost = async (e) => {
         e.preventDefault()
-        if (images.length > 0) {
-
-            for (const image of images) {
-                const formData = new FormData()
-                formData.append("image", image)
-                try {
-                    const response = await client.upload({
-                        image: formData
+            try {
+                if (text !== "" && title !== ""){
+                    setTitle("")
+                    setText("")
+                    await newPost({
+                        variables: {text: text, title: title, catagory: +forumId}
                     })
-                    const data = await response.json()
-                    console.log(data)
-                    await new Promise(resolve => setTimeout(resolve, 2000))
-
-                } catch (e) {
-                    console.log(e)
+                    refetch()
+                    window.scrollTo(0, 0)
                 }
+            } catch (e) {
+                console.log(e)
             }
         }
-    }
 
     return (
         <Box bgGradient="linear(to-r, #24102c, #110914, #24102c)" p={6} minH='100Vh'>
@@ -191,6 +194,7 @@ export default function Forum() {
                                 <Heading>{post.title.trim()}</Heading>
                             </Flex>
                             <Text>{post.text.substring(0, 50).trim()}{post.text.length > 50 ? "..." : ""}</Text>
+                            <Text>{post.user.username} at {formatDate(post.createdAt)}</Text>
                             <Button type="button" colorScheme="orange" onClick={() => navigate(`/forum/${data.forumCatagory.id}/post/${post.id}`)}>View post</Button>
                         </Container>
                     )
@@ -205,7 +209,7 @@ export default function Forum() {
                 {Auth.loggedIn() &&
                     <>
                         <Text fontSize="5xl" color="white" marginTop="6">New post in {data.forumCatagory.title}</Text>
-                        <form onSubmit={handleNewPost}>
+                        <form>
                             <FormControl>
                                 <FormLabel id="titleLabel" htmlFor="title" color="white">Title:</FormLabel>
                                 <Input
@@ -247,7 +251,7 @@ export default function Forum() {
                                     {2000 - text.length} characters remaining
                                 </FormHelperText>
                             </FormControl>
-                            <FormControl>
+                            {/* {<FormControl>
                                 <FormLabel id="fileLabel" htmlFor="file" color="white">Files:</FormLabel>
                                 <Flex>
                                     <Button type="button" onClick={() => {
@@ -287,7 +291,7 @@ export default function Forum() {
                                     ) :
                                         ''}
                                 </FormHelperText>
-                            </FormControl>
+                            </FormControl>} */}
                             <FormControl>
                                 <Button type="submit" colorScheme="green" onClick={handleNewPost}>Post</Button>
                             </FormControl>

@@ -83,7 +83,7 @@ type Query {
 type Mutation {
     addUser(username: String!, email: String!, password: String!, allowContact: Boolean): Auth
     login(email: String!, password: String!): Auth
-    addPost(title: String!, text: String!, image: String, catagory: String!): Posts
+    addPost(title: String!, text: String!, image: String, catagory: Int): Posts
     pinPost(postId: Int!): Posts
     unpinPost(postId: Int!): Posts
     addComment(postId: Int!, text: String!, image: String): Comments

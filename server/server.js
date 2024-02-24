@@ -29,7 +29,7 @@ app.use(express.json());
 
 //Use the rate limiter to prevent brute force attacks
 app.use(limiter)
-app.set('trust proxy', 2)
+app.set('trust proxy', 3)
 
 //If the environment is in production, then set the client build file as the static file
 if (process.env.NODE_ENV === 'production') {
