@@ -56,3 +56,10 @@ mutation addPost($title: String!, $text: String!, $image: String, $catagory: Str
         id
     }
 }`
+
+export const NEWCOMMENT = gql`
+mutation addComment($postId: Int!, $text: String!, $image: String){
+    addComment(postId: $postId, text: $text, image: $image){
+        id
+    }
+}`

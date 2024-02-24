@@ -13,14 +13,15 @@ export default function Forums() {
     const [pinPost] = useMutation(PINPOST)
     const [unpinPost] = useMutation(UNPINPOST)
 
-    const formatDate = (date) => {
-        return Date(date).toLocaleString("en-us", {
+    const formatDate = (timestamp) => {
+        const date = new Date(+timestamp)
+        return date.toLocaleString("en-us", {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric',
-            hour12: true,
+            hour12: true
         })
     }
 
@@ -98,7 +99,7 @@ export default function Forums() {
                                                         {post.text.substring(0, 50).trim()}{post.text.length > 50 ? "..." : ""}
                                                     </Text>
                                                     <Text fontSize="sm">Posted By: {post.user.username} at {formatDate(post.createdAt)}</Text>
-                                                    <Button type="button" colorScheme="purple" m={4} onClick={() => navigate(`/forum/${catagory.title}/post/${post.id}`)} _hover={{
+                                                    <Button type="button" colorScheme="purple" m={4} onClick={() => navigate(`/forum/${catagory.id}/post/${post.id}`)} _hover={{
                                                         bg: 'purple.800',
                                                         transform: "scale(1.05)"
                                                     }}>View Post</Button>

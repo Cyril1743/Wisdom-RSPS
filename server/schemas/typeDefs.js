@@ -24,10 +24,11 @@ type Posts {
     catagory: ForumCatagories
     allowComments: Boolean
     createdAt: String
+    comments: [Comments]
 }
 type Comments {
     id: Int
-    text: String!
+    text: String
     image: String
     user: Users
     postid: Posts

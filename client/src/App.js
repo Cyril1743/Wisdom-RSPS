@@ -15,6 +15,7 @@ import PasswordReset from './pages/PasswordReset';
 import Forums from './pages/Forums';
 import Forum from './pages/Forum';
 import Post from './pages/Post';
+import Shop from './pages/Shop';
 
 const httpLink = createHttpLink({
   uri: "/graphql"
@@ -54,6 +55,7 @@ export default function App() {
               <Route path='/forum' element={<Forums />} />
               <Route path='/forum/:forumId' element={<Forum />} />
               <Route path='/forum/:forumId/post/:postId' element={<Post />}/>
+              <Route path='/store' element={<Shop />} />
             </Routes>
           </Router>
         </ChakraProvider>

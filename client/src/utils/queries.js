@@ -64,3 +64,27 @@ query forumCatagory($id: Int!, $offset: Int) {
         }
     }
 }`
+
+export const CHECKPOST = gql`
+query post($postId: Int!){
+    post(postId: $postId) {
+        id
+        title
+        text
+        image
+        user {
+            username
+        }
+        allowComments
+        createdAt
+        comments {
+            id
+            text
+            image
+            user {
+                username
+            }
+            createdAt
+        }
+    }
+}`

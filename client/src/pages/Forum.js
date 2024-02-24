@@ -25,7 +25,7 @@ export default function Forum() {
     }).then((response) => response.json())
     const clientId = clientSecret.clientId
 
-    const client = new ImgurClient({clientId: clientId})
+    const client = new ImgurClient({ clientId: clientId })
 
     const { loading, data } = useQuery(CHECKFORUMCATAGORY, {
         variables: { id: +forumId, offset: currentPage * 50 }
@@ -119,7 +119,7 @@ export default function Forum() {
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files)
         const totalFiles = images.length + files.length
-        if (totalFiles > 3){
+        if (totalFiles > 3) {
             return
         }
         const filteredFiles = files.filter(file => file.size <= 10000000)
@@ -139,7 +139,7 @@ export default function Forum() {
     const handleNewPost = async (e) => {
         e.preventDefault()
         if (images.length > 0) {
-            
+
             for (const image of images) {
                 const formData = new FormData()
                 formData.append("image", image)
@@ -188,7 +188,8 @@ export default function Forum() {
                     return (
                         <Container key={post.id} color="white" boxShadow="dark-lg" borderRadius="6px" marginTop="4" mb="4">
                             <Flex alignItems="center" justifyContent="space-evenly">{post.pinned ? <StarIcon {...starIconUnpinProps} onClick={() => handleUnpinPost(post.id)} /> : <StarIcon color="gray.800"  {...starIconPinProps} onClick={() => handlePinPost(post.id)} />}
-                                <Heading>{post.title.trim()}</Heading></Flex>
+                                <Heading>{post.title.trim()}</Heading>
+                            </Flex>
                             <Text>{post.text.substring(0, 50).trim()}{post.text.length > 50 ? "..." : ""}</Text>
                             <Button type="button" colorScheme="orange" onClick={() => navigate(`/forum/${data.forumCatagory.id}/post/${post.id}`)}>View post</Button>
                         </Container>

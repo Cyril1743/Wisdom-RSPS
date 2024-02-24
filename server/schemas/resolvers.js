@@ -204,16 +204,19 @@ const resolvers = {
                 const newComment = Comments.create({
                     text,
                     image,
-                    user: context.user.id,
+                    userId: context.user.id,
                     postId
                 })
                 return newComment
             } else {
+                console.log(text, context.user, postId)
                 const newComment = Comments.create({
                     text,
-                    user: context.user.id,
+                    userId: context.user.id,
                     postId
                 })
+                console.log(newComment)
+                return newComment
             }
         },
         addPayment: async (parent, { item_name, item_price, quantity, currency }, context) => {

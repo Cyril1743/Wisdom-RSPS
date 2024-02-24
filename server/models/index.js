@@ -21,7 +21,7 @@ Users.hasMany(PasswordResets, {
     foreignKey: 'userId'
 })
 Comments.belongsTo(Posts, {
-    foreignKey: "postid",
+    foreignKey: "postId",
     onDelete: "CASCADE"
 })
 Comments.belongsTo(Users, {
@@ -38,7 +38,7 @@ Posts.belongsTo(Users, {
     foreignKey: "userId"
 })
 Posts.hasMany(Comments, {
-    foreignKey: "postid"
+    foreignKey: "postId"
 })
 Payments.belongsTo(Users, {
     foreignKey: "buyer",
