@@ -49,6 +49,7 @@ export default function Post() {
                     variables: { postId: +postId, text: text }
                 })
                 refetch()
+                window.scrollTo(0, 0)
             } catch (e) {
                 console.log(e)
             }
@@ -83,11 +84,11 @@ export default function Post() {
                     <Text fontSize="5xl" textAlign="center" color="white">Comments:</Text>
                     {data.post.comments.map((comment, index) => {
                         return (
-                        <Container key={index}>
-                            <Text fontSize="2xl" color="white">{comment.text}</Text>
-                            <Text fontSize="1xl" color="white">{comment.user.username} at {formatDate(comment.createdAt)}</Text>
-                            <Divider />
-                        </Container>)
+                            <Container key={index}>
+                                <Text fontSize="2xl" color="white">{comment.text}</Text>
+                                <Text fontSize="1xl" color="white">{comment.user.username} at {formatDate(comment.createdAt)}</Text>
+                                <Divider />
+                            </Container>)
                     })}
                 </Container>
             )}
