@@ -68,7 +68,7 @@ const resolvers = {
                     order: [['createdAt', 'DESC']]
                 }
             })
-            const plainForumCatagory = forumCatagory.get({plain: true})
+            const plainForumCatagory = forumCatagory.get({ plain: true })
 
             return plainForumCatagory
         },
@@ -117,6 +117,11 @@ const resolvers = {
             if (now.diff(createdAt, 'hour') > 1) {
                 await PasswordResets.destroy({ where: { id: id } })
                 throw new Error("Reset Expired")
+            }
+
+            if (plainPasswordReset.used) {
+                await PasswordResets.destroy({ where: { id: id } })
+                throw new Error("Password reset already used")
             }
 
             return plainPasswordReset
@@ -203,13 +208,11 @@ const resolvers = {
                 })
                 return newComment
             } else {
-                console.log(text, context.user, postId)
                 const newComment = Comments.create({
                     text,
                     userId: context.user.id,
                     postId
                 })
-                console.log(newComment)
                 return newComment
             }
         },
@@ -260,31 +263,40 @@ const resolvers = {
 
         },
         updatePasswordReset: async (parent, { id, newPassword }) => {
-            console.log(id)
-            await PasswordResets.update({
-                used: true
-            }, {
-                where: {
-                    id: id
-                },
-            }).then(async () => {
+            try {   
+                await PasswordResets.update({
+                    used: true
+                }, {
+                    where: {
+                        id: id
+                    }
+                })
+
                 const passwordReset = await PasswordResets.findByPk(id, {
                     include: { model: Users }
                 })
                 const plainPasswordReset = passwordReset.get({ plain: true })
                 console.log(plainPasswordReset)
+                 console.log(id)
+                console.log(newPassword)
+                const oldUser = await Users.findByPk(plainPasswordReset.user.id)
+                const plainOldUser = oldUser.get({plain: true})
+                console.log(plainOldUser)
 
                 await Users.update({ password: newPassword }, {
                     where: {
-                        id: plainPasswordReset.userId
+                        id: plainPasswordReset.user.id
                     }
                 })
 
-                const user = await Users.findByPk(plainPasswordReset.userId)
+                const user = await Users.findByPk(plainPasswordReset.user.id)
                 const plainUser = user.get({ plain: true })
+                console.log(plainUser)
 
                 passwordResetResponse(plainUser.email)
-            })
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from "@apollo/client"
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client"
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { setContext } from "@apollo/client/link/context";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 //eslint-disable-next-line
 import bootstrap from 'bootstrap';
 import "./styles/styles.css"
@@ -21,7 +22,7 @@ const httpLink = createHttpLink({
   uri: "/graphql"
 })
 
-const authLink = setContext((_, {headers}) => {
+const authLink = setContext((_, { headers }) => {
   //get the auth token from local storage
   const token = localStorage.getItem('id_token');
   //return the headers to the context so httpLink can read them
@@ -39,6 +40,13 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const initialOptions = {
+  "client-id": "EG7R7CQb7VkRMdKBapN1PbfHed49DPbnqLzGHzxuGbrdizw0OSVBoL491GvrsQ8m12Dx2cjWhjTpGHJS",
+  curency: "USD",
+  intent: "capture"
+
+}
+
 export default function App() {
   return (
     <div className='background'>
@@ -54,8 +62,11 @@ export default function App() {
               <Route path='/passwordreset/:passwordResetId' element={<PasswordReset />} />
               <Route path='/forum' element={<Forums />} />
               <Route path='/forum/:forumId' element={<Forum />} />
-              <Route path='/forum/:forumId/post/:postId' element={<Post />}/>
-              <Route path='/store' element={<Shop />} />
+              <Route path='/forum/:forumId/post/:postId' element={<Post />} />
+              <Route path='/store' element={
+                <PayPalScriptProvider options={initialOptions}>
+                  <Shop />
+                </PayPalScriptProvider>} />
             </Routes>
           </Router>
         </ChakraProvider>

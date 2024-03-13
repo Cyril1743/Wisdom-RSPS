@@ -25,7 +25,7 @@ export default function PasswordReset() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     //Consts for the queries and mutations
-    const { data, loading } = useQuery(CHECKRESET, {
+    const { data, loading, error } = useQuery(CHECKRESET, {
         variables: { id: passwordResetId },
         skip: !passwordResetId
     })
@@ -51,6 +51,7 @@ export default function PasswordReset() {
             })
             setModalMessage('If there is an email associated with this account, then a password reset will be sent to the email. Make sure to check spam folders for the email. The request will expire in 1 hour.')
             onOpen()
+            setEmail("")
         } catch (e) {
             if (e.message.includes('No user with email')) {
                 setEmailError('No user with email')
@@ -92,14 +93,14 @@ export default function PasswordReset() {
             onOpen()
         }
         try {
-            if (newPassword && !newPasswordError){
-            await updatePasswordReset({
-                variables: { id: passwordResetId, newPassword: newPassword }
-            })
-            setModalMessage('Password updated')
-            setModalUrl('/login')
-            onOpen()
-        }
+            if (newPassword && !newPasswordError) {
+                await updatePasswordReset({
+                    variables: { id: passwordResetId, newPassword: newPassword }
+                })
+                setModalMessage('Password updated')
+                setModalUrl('/login')
+                onOpen()
+            }
         } catch (e) {
             alert(e)
         }
@@ -108,12 +109,19 @@ export default function PasswordReset() {
     useEffect(() => {
         if (!loading) {
             if (passwordResetId && !data) {
-                setModalMessage("Invalid reset token, please try again")
-                setModalUrl("/passwordreset")
-                onOpen()
+                if (error.message.includes("Password reset already used")) {
+                    setModalMessage("Password reset already used. Please try again.")
+                    setModalUrl("/passwordreset")
+                    onOpen()
+                } else {
+                    setModalMessage("Invalid reset token, please try again")
+                    setModalUrl("/passwordreset")
+                    onOpen()
+                }
+
             }
         }
-    }, [data, onOpen, passwordResetId, loading])
+    }, [data, onOpen, passwordResetId, loading, error])
 
     if (passwordResetId && data) {
         return (
@@ -147,14 +155,14 @@ export default function PasswordReset() {
                                 </InputRightElement>
                             </InputGroup>
                             {newPasswordError ? (
-                            <FormErrorMessage>
-                                Invalid password
-                            </FormErrorMessage>
-                        ) : (
-                            <FormHelperText>
-                                Pick a strong password 8-16 characters long containing at least one uppercase letter, one lowercase letter, one number, and at least one special character
-                            </FormHelperText>
-                        )}
+                                <FormErrorMessage>
+                                    Invalid password
+                                </FormErrorMessage>
+                            ) : (
+                                <FormHelperText>
+                                    Pick a strong password 8-16 characters long containing at least one uppercase letter, one lowercase letter, one number, and at least one special character
+                                </FormHelperText>
+                            )}
                         </FormControl>
                         <FormControl isInvalid={confirmPasswordError} isRequired aria-required>
                             <FormLabel id='confirmNewPassword' htmlFor='confirmNewPassword' color="white">Confirm Password:</FormLabel>
