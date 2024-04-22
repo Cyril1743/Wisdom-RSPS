@@ -88,3 +88,17 @@ query post($postId: Int!){
         }
     }
 }`
+
+export const CHECKSTORECATAGORIES = gql`
+query storeCatagories {
+    storeCatagories {
+        id
+        products {
+            id
+            name
+            price
+            discount
+            image_url
+        }
+    }
+}`

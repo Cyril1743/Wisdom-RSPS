@@ -48,6 +48,7 @@ type Payments {
 type StoreCatagories {
     id: Int
     title: String
+    products: [Products]
 }
 type Products {
     id: Int

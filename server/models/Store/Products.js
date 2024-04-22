@@ -29,7 +29,8 @@ Products.init(
             references: {
                 model: 'storeCatagories',
                 key: 'id'
-            }
+            },
+            allowNull: false
         }
 
     },

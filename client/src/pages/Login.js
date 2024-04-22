@@ -145,7 +145,7 @@ export default function Login() {
             }}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Password Reset</ModalHeader>
+                    <ModalHeader>Success!</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         Login Successful

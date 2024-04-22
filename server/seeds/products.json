@@ -1,0 +1,22 @@
+[
+    {
+        "name":"10 Wisdom Credits",
+        "price": 10,
+        "discount": 8,
+        "image_url": "10WisdomCredits",
+        "catagory": 1
+    },
+    {
+        "name": "25 Wisdom Credits",
+        "price": 25,
+        "image_url": "25WisdomCredits",
+        "catagory": 1
+    },
+    {
+        "name": "50 Wisdom Credits",
+        "price": 50,
+        "discount": 45,
+        "image_url": "50WisdomCredits",
+        "catagory": 1
+    }
+]

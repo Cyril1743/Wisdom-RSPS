@@ -3,7 +3,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@ap
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { setContext } from "@apollo/client/link/context";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 //eslint-disable-next-line
 import bootstrap from 'bootstrap';
 import "./styles/styles.css"
@@ -40,13 +39,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-const initialOptions = {
-  "client-id": "EG7R7CQb7VkRMdKBapN1PbfHed49DPbnqLzGHzxuGbrdizw0OSVBoL491GvrsQ8m12Dx2cjWhjTpGHJS",
-  curency: "USD",
-  intent: "capture"
-
-}
-
 export default function App() {
   return (
     <div className='background'>
@@ -63,10 +55,8 @@ export default function App() {
               <Route path='/forum' element={<Forums />} />
               <Route path='/forum/:forumId' element={<Forum />} />
               <Route path='/forum/:forumId/post/:postId' element={<Post />} />
-              <Route path='/store' element={
-                <PayPalScriptProvider options={initialOptions}>
-                  <Shop />
-                </PayPalScriptProvider>} />
+              <Route path='/store' element={<Shop />} />
+              <Route path='/store/:state' element={<Shop />} />
             </Routes>
           </Router>
         </ChakraProvider>

@@ -5,6 +5,7 @@ const path = require("path");
 const { authMiddleware } = require("./utils/auth");
 const {rateLimit} = require('express-rate-limit')
 require("dotenv").config()
+const router = require("./routes/index")
 
 //Consts for Apollo and connecting to the database
 const { typeDefs, resolvers } = require("./schemas/index");
@@ -43,6 +44,8 @@ app.get('/', (req, res) => {
 app.post('/forum/clientId', (req, res) => {
     res.send({clientId: process.env.IMGUR_CLIENT_ID})
 })
+
+app.use("/api", router)
 
 const startApolloServer = async () => {
     await server.start();
